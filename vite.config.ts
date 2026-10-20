@@ -14,4 +14,13 @@ export default defineConfig({
     port: 5173,
     allowedHosts: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          supabase: ["@supabase/supabase-js"],
+        },
+      },
+    },
+  },
 });

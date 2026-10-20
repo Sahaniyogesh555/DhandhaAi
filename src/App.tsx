@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CalendarClock, CheckCircle2, Gauge, Home, KeyRound, LayoutGrid, LifeBuoy,
   LogOut, Menu, MessageSquareHeart, Plus, Settings, Sparkles, Swords, Wallet, X,
@@ -32,10 +32,11 @@ const APP_VIEWS: View[] = ["dashboard", "audit", "reviews", "studio", "library",
 
 export default function App() {
   const store = useAppStore();
-  const [view, setView] = useState<View>(() => (store.currentUser ? "dashboard" : "landing"));
+  const [view, setView] = useState<View>("landing");
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [prefill, setPrefill] = useState<StudioPrefill | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const didRestoreRedirect = useRef(false);
 
   useEffect(() => {
     if (!toastMsg) return;
@@ -45,14 +46,33 @@ export default function App() {
 
   const go = (v: View) => { setView(v); setMoreOpen(false); window.scrollTo({ top: 0 }); };
   const toast = (m: string) => setToastMsg(m);
-  const onDemo = () => { store.startDemo(); go("dashboard"); };
+  const onDemo = async () => {
+    try { await store.startDemo(); go("dashboard"); }
+    catch { toast("Could not open the demo workspace. Please try again."); }
+  };
 
-  // Auth guards
+  useEffect(() => {
+    if (store.ready && store.currentUser && view === "landing" && !didRestoreRedirect.current) {
+      didRestoreRedirect.current = true;
+      setView("dashboard");
+    }
+  }, [store.ready, store.currentUser, view]);
+
+  // Auth guards wait for Supabase to restore the saved session first.
   const needsAuth = APP_VIEWS.includes(view);
   useEffect(() => {
-    if (needsAuth && !store.currentUser) setView("auth");
-  }, [needsAuth, store.currentUser]);
+    if (store.ready && needsAuth && !store.currentUser) setView("auth");
+  }, [store.ready, needsAuth, store.currentUser]);
 
+  if (!store.ready) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-4 text-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-2xl font-extrabold text-white">D</div>
+        <p className="font-bold text-ink">Loading your workspace...</p>
+        <p className="text-sm text-muted">Connecting securely to DhandhaAi.</p>
+      </div>
+    );
+  }
   if (view === "landing") return <><Landing go={go} onDemo={onDemo} /><Toast msg={toastMsg} /></>;
   if (view === "auth") return <><AuthView store={store} go={go} /><Toast msg={toastMsg} /></>;
   if (!store.currentUser) {
@@ -142,7 +162,15 @@ export default function App() {
         </div>
       )}
 
-      <main className="flex-1 px-4 py-6 pb-28 sm:px-6 lg:px-8 lg:pb-8 max-w-6xl w-full mx-auto">{content}</main>
+      <main className="flex-1 px-4 py-6 pb-28 sm:px-6 lg:px-8 lg:pb-8 max-w-6xl w-full mx-auto">
+        {store.syncError && (
+          <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-danger" role="alert">
+            <span>Some changes could not sync: {store.syncError}. Check your connection; the next change will retry.</span>
+            <button onClick={store.clearSyncError} aria-label="Dismiss sync error" className="shrink-0"><X className="h-4 w-4" aria-hidden /></button>
+          </div>
+        )}
+        {content}
+      </main>
 
       {/* Mobile bottom nav */}
       <nav className="fixed bottom-0 inset-x-0 z-30 border-t border-line bg-white pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label="Primary">

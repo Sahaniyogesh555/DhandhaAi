@@ -11,20 +11,36 @@ export function AuthView({ store, go }: { store: StoreT; go: (v: View) => void }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
     setError(null);
-    if (mode === "signup") {
-      if (name.trim().length < 2) return setError("Please enter your name.");
-      if (password.length < 6) return setError("Password must be at least 6 characters.");
-      const err = store.signup(name.trim(), email.trim(), password);
+    if (mode === "signup" && name.trim().length < 2) return setError("Please enter your name.");
+    if (password.length < 6) return setError("Password must be at least 6 characters.");
+    setBusy(true);
+    try {
+      const err = mode === "signup"
+        ? await store.signup(name.trim(), email.trim(), password)
+        : await store.login(email.trim(), password);
       if (err) return setError(err);
-      go("onboarding");
-    } else {
-      const err = store.login(email.trim(), password);
-      if (err) return setError(err);
-      // onboarding vs dashboard decided by App once state settles; try dashboard, App guards.
+      go(mode === "signup" ? "onboarding" : "dashboard");
+    } catch {
+      setError("Could not reach the server. Check your connection and try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const openDemo = async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      await store.startDemo();
       go("dashboard");
+    } catch {
+      setError("Could not open the demo workspace. Please try again in a moment.");
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -48,17 +64,17 @@ export function AuthView({ store, go }: { store: StoreT; go: (v: View) => void }
         <form className="mt-5 space-y-4" onSubmit={(e) => { e.preventDefault(); submit(); }}>
           {mode === "signup" && <Field label="Your name"><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Sarita Sharma" autoComplete="name" /></Field>}
           <Field label="Email"><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required /></Field>
-          <Field label="Password" hint={mode === "signup" ? "At least 6 characters. (Demo build: accounts live in this browser only.)" : undefined}>
+          <Field label="Password" hint={mode === "signup" ? "At least 6 characters. Your account is securely stored in Supabase." : undefined}>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === "signup" ? "new-password" : "current-password"} required />
           </Field>
           {error && <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm font-semibold text-danger" role="alert">{error}</div>}
-          <Button type="submit" className="w-full py-3">{mode === "signup" ? "Create free account" : "Log in"}</Button>
+          <Button type="submit" className="w-full py-3" loading={busy}>{mode === "signup" ? "Create free account" : "Log in"}</Button>
         </form>
         <div className="my-5 flex items-center gap-3 text-xs font-semibold text-muted"><span className="h-px flex-1 bg-line" />OR<span className="h-px flex-1 bg-line" /></div>
-        <Button variant="secondary" className="w-full py-3" onClick={() => { store.startDemo(); go("dashboard"); }}>
+        <Button variant="secondary" className="w-full py-3" loading={busy} onClick={openDemo}>
           <Play className="h-4 w-4" aria-hidden /> Explore the demo cafe
         </Button>
-        <p className="mt-3 text-center text-xs text-muted">Demo opens a sample Kathmandu cafe with sample reviews, so you can see every feature working.</p>
+        <p className="mt-3 text-center text-xs text-muted">Demo opens a shared sample Kathmandu cafe. It uses the live database, but the business and reviews are fictional.</p>
       </Card>
     </div>
   );

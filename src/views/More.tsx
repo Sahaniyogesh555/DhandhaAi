@@ -10,11 +10,12 @@ export function BillingView({ store, toast }: { store: StoreT; toast: (m: string
   const user = store.currentUser!;
   const choose = (plan: PlanId) => {
     store.update((s) => ({ ...s, users: s.users.map((u) => u.id === user.id ? { ...u, plan } : u) }));
-    toast(plan === "free" ? "Switched to Free. No lock-in, no calls - the door stays open both ways." : `${PLANS.find((p) => p.id === plan)?.name} selected (demo: no payment taken). Checkout via eSewa/Khalti/card plugs in here with the owner's merchant account.`);
+    toast(plan === "free" ? "Switched to Free. No lock-in, no calls - the door stays open both ways." : `${PLANS.find((p) => p.id === plan)?.name} preview selected for this session only. No payment or paid access is granted.`);
   };
   return (
     <div>
       <PageHeader title="Plan & billing" subtitle="The price you saw is the price. Cancel in two clicks, keep access until your paid period ends. Nobody will call to talk you out of it." />
+      <p className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-warn">Demo billing only: plan buttons are a temporary preview. No money is taken, paid access is not granted, and a selected plan is not saved. Live checkout must be verified server-side.</p>
       <div className="grid gap-5 md:grid-cols-3">
         {PLANS.map((p) => (
           <Card key={p.id} className={`p-6 ${user.plan === p.id ? "border-accent ring-2 ring-accent" : ""}`}>

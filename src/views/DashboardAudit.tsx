@@ -28,7 +28,7 @@ export function DashboardView({ store, go }: { store: StoreT; go: (v: View) => v
     const today = new Date().toDateString();
     const exists = store.state.snapshots.some((s) => s.businessId === biz.id && new Date(s.createdAt).toDateString() === today);
     if (!exists) {
-      store.update((s) => ({ ...s, snapshots: [...s.snapshots, { id: uid(), businessId: biz.id, overall: audit.overall, createdAt: new Date().toISOString() }] }));
+      store.update((s) => ({ ...s, snapshots: [...s.snapshots, { id: uid(), businessId: biz.id, overall: audit.overall, factors: audit.factors, checks: audit.checks, createdAt: new Date().toISOString() }] }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [biz?.id, audit?.overall]);

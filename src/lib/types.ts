@@ -90,6 +90,8 @@ export interface AuditSnapshot {
   id: ID;
   businessId: ID;
   overall: number;
+  factors?: { gbp: number; reviews: number; social: number; keywords: number };
+  checks?: unknown;
   createdAt: string;
 }
 
