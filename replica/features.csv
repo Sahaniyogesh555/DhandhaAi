@@ -1,0 +1,30 @@
+feature,area,priority,original,clone,notes
+"Sign up / log in (email + password, demo account)",onboarding,must,yes,yes,Original also implies phone/social; clone starts email
+Add a business profile (name category city contact hours services),onboarding,must,yes,yes,GBP connect simulated until owner's own Google API approval
+Free Google score audit with 4-factor breakdown (GBP social reviews keywords),audit,must,yes,yes,Factor structure evidenced by checkmarketingscore.com
+Actionable fix checklist with impact points and progress tracking,audit,must,yes,yes,Completing a fix updates profile and re-scores
+Dashboard with overall score and next best actions,dashboard,must,yes,yes,
+Google reviews inbox with replied/unreplied states,reviews,must,yes,yes,Seed/demo reviews + add-your-own until GBP API connected
+AI-personalised review reply generator (tone-aware incl. 1-star de-escalation),reviews,must,yes,yes,Rule/template engine; swappable for an LLM API key later
+AI social post generator (caption + hashtags + poster) for FB + Instagram,social,must,yes,yes,Preview-and-approve before publish (entrepreneur fix)
+Ready-to-share template library (festivals offers products),social,must,yes,yes,Localised: Nepal + India festivals (entrepreneur angle)
+Google updates planner (weekly offer/festival/event posts),social,must,yes,yes,Shares Post engine with kind=google
+Schedule posts and publish queue with statuses,social,must,yes,yes,Simulated publish until Meta/Google app review done
+"Transparent pricing page (no call-to-buy, cancel in 2 taps, no AutoPay trap)",billing,must,yes,yes,Original has paid plans but pricing not public on site; clone differentiates on transparency
+SEO keyword analysis (category + city suggestions with in-profile check),seo,should,yes,yes,No fake search volumes - opportunity judged relatively
+Competitor analysis (compare rating reviews photos posting cadence),seo,should,yes,yes,User-entered/public figures only
+Post calendar / content history,social,should,yes,partial,
+Score trend over time,audit,should,yes,yes,Stored audit snapshots
+In-app support tickets with visible status + direct WhatsApp/email contacts,support,should,yes,yes,Direct fix for top review complaint (unreachable support)
+Multi-business support,onboarding,should,yes,yes,Duplicate-profile warning (reported pain point)
+Nepali + Hindi caption language toggle,social,should,no,yes,Clone addition (extra) - original is English-only per App Store
+Download poster image for manual sharing (WhatsApp etc.),social,should,yes,yes,Works even before Meta API approval - reduces connect-account pain
+QR code to collect more Google reviews,reviews,could,no,no,Clone addition (extra) - gap vs ReviewPro noted in research
+Real GBP API connect + live review sync + live posting,integrations,could,yes,partial,Needs owner's own Google API approval (weeks); stubbed now
+Real Meta (FB/IG) publish API,integrations,could,yes,partial,Needs owner's own Meta app review; stubbed now
+Team members / roles,team,could,yes,no,Not evidenced publicly for original; low priority
+Payments (Stripe/eSewa/Khalti checkout for plans),billing,could,yes,partial,Checkout UI now; live keys are owner's step
+Their managed done-for-you service / sales operation,operations,could,yes,skip,People and call-centre - not software; clone is self-serve by design
+Their user base ratings and store presence,distribution,could,yes,skip,Their network asset - cannot be cloned
+Their logo copy screenshots and image catalogue,brand,could,yes,skip,Owned IP - clone writes/generates its own
+Their private APIs / OAuth clients,integrations,could,yes,skip,Forbidden - official public APIs with own keys only

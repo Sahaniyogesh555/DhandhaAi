@@ -1,0 +1,20 @@
+{
+  "avoid": [
+    "Dhanda",
+    "EZO",
+    "Ezo Technologies"
+  ],
+  "app_store": {
+    "name": "DhandhaAi: Local Marketing",
+    "subtitle": "Google score, replies & posts",
+    "promotional_text": "Free Google profile audit. AI review replies and weekly posts - nothing publishes without your approval.",
+    "description": "DhandhaAi helps local shops get found on Google Maps and stay active on social media, without a marketing team.\n\nWhat you get:\n- A free audit of your Google Business Profile with a plain-language fix list\n- AI-drafted replies to Google reviews in English, Nepali and Hindi\n- Festival, offer and product posts with a ready poster image\n- Local keyword checks and competitor comparison\n- Weekly Google updates, scheduled in one sitting\n\nNo sales calls. No autopay lock-in. Transparent pricing printed in the app, and cancel in two clicks.\n\nBuilt for salons, cafes, clinics, kirana stores and every local business in Nepal and India.",
+    "keywords": "gmb profile,maps ranking,review reply,kirana,salon,cafe,clinic,pasal,offers,festival,near me",
+    "whats_new": "First release: free audit, AI replies, post studio with poster download."
+  },
+  "google_play": {
+    "title": "DhandhaAi: Local Marketing",
+    "short_description": "Google score audit, AI review replies & weekly posts for local shops.",
+    "full_description": "DhandhaAi helps local shops get found on Google Maps and stay active on social media, without a marketing team.\n\n- Free Google Business Profile audit with a fix list ordered by impact\n- AI review replies in English, Nepali and Hindi\n- Festival and offer posts with poster images\n- Keyword and competitor checks with honest guidance\n\nNothing posts without your approval. Pricing is printed in the open and cancelling takes two clicks."
+  }
+}
